@@ -2,11 +2,8 @@
   "ExpandedNodes": [
     "",
     "\\BackEnd",
-    "\\BackEnd\\WeatherAppAPI",
-    "\\BackEnd\\WeatherAppAPI\\WeatherAppAPI",
-    "\\BackEnd\\WeatherAppAPI\\WeatherAppAPI\\bin",
-    "\\BackEnd\\WeatherAppAPI\\WeatherAppAPI\\bin\\roslyn"
+    "\\Database",
+    "\\Database\\WeatherAppDB"
   ],
-  "SelectedNode": "\\BackEnd\\WeatherAppAPI\\WeatherAppAPI\\bin\\roslyn",
   "PreviewInSolutionExplorer": false
 }
