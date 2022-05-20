@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="WeatherApp_dbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="WeatherApp_dbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="__RefactorLog">
           <Key>
             <PropertyRef Name="OperationKey" />
@@ -33,6 +33,7 @@
           <Property Name="moonset" Type="datetime" />
           <Property Name="moonphase" Type="nvarchar" MaxLength="55" />
           <Property Name="moon_illumination" Type="int" />
+          <Property Name="location_id" Type="bigint" Nullable="false" />
         </EntityType>
         <EntityType Name="forecasthour">
           <Key>
@@ -52,6 +53,15 @@
           <Property Name="rain" Type="bit" />
           <Property Name="snow" Type="bit" />
         </EntityType>
+        <EntityType Name="location">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="latitude" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="longitude" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+        </EntityType>
         <EntityType Name="User">
           <Key>
             <PropertyRef Name="Id" />
@@ -62,6 +72,18 @@
           <Property Name="Password" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="IsAdmin" Type="bit" Nullable="false" />
         </EntityType>
+        <Association Name="FK_forecastday_location">
+          <End Role="location" Type="Self.location" Multiplicity="1" />
+          <End Role="forecastday" Type="Self.forecastday" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="location">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="forecastday">
+              <PropertyRef Name="location_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_forecasthour_day">
           <End Role="forecastday" Type="Self.forecastday" Multiplicity="1" />
           <End Role="forecasthour" Type="Self.forecasthour" Multiplicity="*" />
@@ -78,14 +100,18 @@
           <EntitySet Name="__RefactorLog" EntityType="Self.__RefactorLog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="forecastday" EntityType="Self.forecastday" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="forecasthour" EntityType="Self.forecasthour" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="location" EntityType="Self.location" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_forecastday_location" Association="Self.FK_forecastday_location">
+            <End Role="location" EntitySet="location" />
+            <End Role="forecastday" EntitySet="forecastday" />
+          </AssociationSet>
           <AssociationSet Name="FK_forecasthour_day" Association="Self.FK_forecasthour_day">
             <End Role="forecastday" EntitySet="forecastday" />
             <End Role="forecasthour" EntitySet="forecasthour" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="WeatherApp_dbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -118,6 +144,8 @@
           <Property Name="moonphase" Type="String" MaxLength="55" FixedLength="false" Unicode="true" />
           <Property Name="moon_illumination" Type="Int32" />
           <NavigationProperty Name="forecasthour" Relationship="Self.FK_forecasthour_day" FromRole="forecastday" ToRole="forecasthour" />
+          <Property Name="location_id" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="location" Relationship="WeatherApp_dbModel.FK_forecastday_location" FromRole="forecastday" ToRole="location" />
         </EntityType>
         <EntityType Name="forecasthour">
           <Key>
@@ -169,7 +197,34 @@
             <End Role="forecastday" EntitySet="forecastday" />
             <End Role="forecasthour" EntitySet="forecasthour" />
           </AssociationSet>
+          <EntitySet Name="location" EntityType="WeatherApp_dbModel.location" />
+          <AssociationSet Name="FK_forecastday_location" Association="WeatherApp_dbModel.FK_forecastday_location">
+            <End Role="location" EntitySet="location" />
+            <End Role="forecastday" EntitySet="forecastday" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="location">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="latitude" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="longitude" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <NavigationProperty Name="forecastday" Relationship="WeatherApp_dbModel.FK_forecastday_location" FromRole="location" ToRole="forecastday" />
+        </EntityType>
+        <Association Name="FK_forecastday_location">
+          <End Type="WeatherApp_dbModel.location" Role="location" Multiplicity="1" />
+          <End Type="WeatherApp_dbModel.forecastday" Role="forecastday" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="location">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="forecastday">
+              <PropertyRef Name="location_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -186,6 +241,7 @@
           <EntitySetMapping Name="forecastday">
             <EntityTypeMapping TypeName="WeatherApp_dbModel.forecastday">
               <MappingFragment StoreEntitySet="forecastday">
+                <ScalarProperty Name="location_id" ColumnName="location_id" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="date" ColumnName="date" />
                 <ScalarProperty Name="max_temp" ColumnName="max_temp" />
@@ -234,6 +290,16 @@
                 <ScalarProperty Name="Display_Name" ColumnName="Display_Name" />
                 <ScalarProperty Name="Password" ColumnName="Password" />
                 <ScalarProperty Name="IsAdmin" ColumnName="IsAdmin" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="location">
+            <EntityTypeMapping TypeName="WeatherApp_dbModel.location">
+              <MappingFragment StoreEntitySet="location">
+                <ScalarProperty Name="longitude" ColumnName="longitude" />
+                <ScalarProperty Name="latitude" ColumnName="latitude" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -1,0 +1,109 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="WeatherApp_dbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="__RefactorLog">
+    <Key>
+      <PropertyRef Name="OperationKey" />
+    </Key>
+    <Property Name="OperationKey" Type="uniqueidentifier" Nullable="false" />
+  </EntityType>
+  <EntityType Name="forecastday">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="date" Type="datetime" Nullable="false" />
+    <Property Name="max_temp" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="min_temp" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="avg_temp" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="max_wind" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="min_wind" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="avg_wind" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="total_precision" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="avg_visibility" Type="decimal" Precision="18" Scale="4" />
+    <Property Name="avg_humidity" Type="int" />
+    <Property Name="condition" Type="nvarchar" MaxLength="55" />
+    <Property Name="sunrise" Type="datetime" />
+    <Property Name="sunset" Type="datetime" />
+    <Property Name="moonrise" Type="datetime" />
+    <Property Name="moonset" Type="datetime" />
+    <Property Name="moonphase" Type="nvarchar" MaxLength="55" />
+    <Property Name="moon_illumination" Type="int" />
+    <Property Name="location_id" Type="bigint" Nullable="false" />
+  </EntityType>
+  <EntityType Name="forecasthour">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="forecastday_id" Type="bigint" Nullable="false" />
+    <Property Name="time" Type="datetime" Nullable="false" />
+    <Property Name="temp" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="condition" Type="nvarchar" MaxLength="55" />
+    <Property Name="wind_speed" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="wind_direction" Type="nvarchar" MaxLength="55" />
+    <Property Name="pressure" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="humidity" Type="int" />
+    <Property Name="cloud_coverage" Type="int" />
+    <Property Name="visibility" Type="decimal" Precision="18" Scale="4" />
+    <Property Name="rain" Type="bit" />
+    <Property Name="snow" Type="bit" />
+  </EntityType>
+  <EntityType Name="location">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="name" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="latitude" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="longitude" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+  </EntityType>
+  <EntityType Name="User">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Login" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Display_Name" Type="nvarchar" MaxLength="50" />
+    <Property Name="Password" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="IsAdmin" Type="bit" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_forecastday_location">
+    <End Role="location" Type="Self.location" Multiplicity="1" />
+    <End Role="forecastday" Type="Self.forecastday" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="location">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="forecastday">
+        <PropertyRef Name="location_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_forecasthour_day">
+    <End Role="forecastday" Type="Self.forecastday" Multiplicity="1" />
+    <End Role="forecasthour" Type="Self.forecasthour" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="forecastday">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="forecasthour">
+        <PropertyRef Name="forecastday_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="WeatherApp_dbModelStoreContainer">
+    <EntitySet Name="__RefactorLog" EntityType="Self.__RefactorLog" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="forecastday" EntityType="Self.forecastday" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="forecasthour" EntityType="Self.forecasthour" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="location" EntityType="Self.location" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_forecastday_location" Association="Self.FK_forecastday_location">
+      <End Role="location" EntitySet="location" />
+      <End Role="forecastday" EntitySet="forecastday" />
+    </AssociationSet>
+    <AssociationSet Name="FK_forecasthour_day" Association="Self.FK_forecasthour_day">
+      <End Role="forecastday" EntitySet="forecastday" />
+      <End Role="forecasthour" EntitySet="forecasthour" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

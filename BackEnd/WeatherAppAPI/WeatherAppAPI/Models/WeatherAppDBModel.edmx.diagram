@@ -10,6 +10,8 @@
         <EntityTypeShape EntityType="WeatherApp_dbModel.forecasthour" Width="1.5" PointX="3" PointY="1.5" IsExpanded="true" />
         <EntityTypeShape EntityType="WeatherApp_dbModel.User" Width="1.5" PointX="5.75" PointY="2.75" IsExpanded="true" />
         <AssociationConnector Association="WeatherApp_dbModel.FK_forecasthour_day" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="WeatherApp_dbModel.location" Width="1.5" PointX="0.75" PointY="7.5" />
+        <AssociationConnector Association="WeatherApp_dbModel.FK_forecastday_location" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

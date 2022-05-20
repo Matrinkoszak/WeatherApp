@@ -38,8 +38,10 @@ namespace WeatherAppAPI.Models
         public Nullable<System.DateTime> moonset { get; set; }
         public string moonphase { get; set; }
         public Nullable<int> moon_illumination { get; set; }
+        public long location_id { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<forecasthour> forecasthour { get; set; }
+        public virtual location location { get; set; }
     }
 }
