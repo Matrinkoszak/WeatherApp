@@ -60,8 +60,12 @@
     <Folder Include="dbo\Tables\" />
   </ItemGroup>
   <ItemGroup>
-    <Build Include="dbo\Tables\User.sql" />
+    <Build Include="dbo\Tables\user.sql" />
     <Build Include="dbo\Tables\forecasthour.sql" />
     <Build Include="dbo\Tables\forecastday.sql" />
+    <Build Include="dbo\Tables\location.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <RefactorLog Include="WeatherAppDB.refactorlog" />
   </ItemGroup>
 </Project>

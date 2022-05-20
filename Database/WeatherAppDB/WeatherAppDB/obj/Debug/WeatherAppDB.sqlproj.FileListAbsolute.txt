@@ -1,0 +1,10 @@
+C:\Users\Taboret\source\repos\WeatherApp\Database\WeatherAppDB\WeatherAppDB\bin\Debug\WeatherAppDB.dacpac
+C:\Users\Taboret\source\repos\WeatherApp\Database\WeatherAppDB\WeatherAppDB\obj\Debug\WeatherAppDB.sqlproj.AssemblyReference.cache
+C:\Users\Taboret\source\repos\WeatherApp\Database\WeatherAppDB\WeatherAppDB\obj\Debug\Model.xml
+C:\Users\Taboret\source\repos\WeatherApp\Database\WeatherAppDB\WeatherAppDB\obj\Debug\refactor.xml
+C:\Users\Taboret\source\repos\WeatherApp\Database\WeatherAppDB\WeatherAppDB\obj\Debug\postdeploy.sql
+C:\Users\Taboret\source\repos\WeatherApp\Database\WeatherAppDB\WeatherAppDB\obj\Debug\predeploy.sql
+C:\Users\Taboret\source\repos\WeatherApp\Database\WeatherAppDB\WeatherAppDB\obj\Debug\WeatherAppDB.dll
+C:\Users\Taboret\source\repos\WeatherApp\Database\WeatherAppDB\WeatherAppDB\obj\Debug\WeatherAppDB.pdb
+C:\Users\Taboret\source\repos\WeatherApp\Database\WeatherAppDB\WeatherAppDB\bin\Debug\WeatherAppDB.dll
+C:\Users\Taboret\source\repos\WeatherApp\Database\WeatherAppDB\WeatherAppDB\bin\Debug\WeatherAppDB.pdb

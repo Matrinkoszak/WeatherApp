@@ -17,6 +17,8 @@
     [moonset]           DATETIME        NULL,
     [moonphase]         NVARCHAR (55)   NULL,
     [moon_illumination] INT             NULL,
-    PRIMARY KEY CLUSTERED ([Id] ASC)
+    [location_id] BIGINT NOT NULL, 
+    PRIMARY KEY CLUSTERED ([Id] ASC), 
+    CONSTRAINT [FK_forecastday_location] FOREIGN KEY ([location_id]) REFERENCES [dbo].[location]([Id])
 );
 
