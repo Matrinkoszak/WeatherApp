@@ -64,6 +64,7 @@
     <Build Include="dbo\Tables\forecasthour.sql" />
     <Build Include="dbo\Tables\forecastday.sql" />
     <Build Include="dbo\Tables\location.sql" />
+    <Build Include="dbo\Tables\authToken.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="WeatherAppDB.refactorlog" />
