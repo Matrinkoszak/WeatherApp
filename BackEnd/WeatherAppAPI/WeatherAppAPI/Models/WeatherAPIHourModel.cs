@@ -12,7 +12,7 @@ namespace WeatherAppAPI.Models
         public int is_day { get; set; }
         public WeatherAPIConditionModel condition { get; set; }
         public decimal wind_kph { get; set; }
-        public decimal wind_dir { get; set; }
+        public string wind_dir { get; set; }
         public decimal pressure_mb { get; set; }
         public int humidity { get; set; }
         public int cloud { get; set; }

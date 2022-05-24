@@ -6,15 +6,15 @@
     <edmx:Diagrams>
       <Diagram DiagramId="7d81063ddf80469d99b15cbdcf76f50c" Name="Diagram1">
         <EntityTypeShape EntityType="WeatherApp_dbModel.C__RefactorLog" Width="1.5" PointX="5.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="WeatherApp_dbModel.forecastday" Width="1.5" PointX="0.75" PointY="1" IsExpanded="true" />
         <EntityTypeShape EntityType="WeatherApp_dbModel.forecasthour" Width="1.5" PointX="3" PointY="1.5" IsExpanded="true" />
         <EntityTypeShape EntityType="WeatherApp_dbModel.User" Width="1.5" PointX="5.75" PointY="2.75" IsExpanded="true" />
-        <AssociationConnector Association="WeatherApp_dbModel.FK_forecasthour_day" ManuallyRouted="false" />
         <EntityTypeShape EntityType="WeatherApp_dbModel.location" Width="1.5" PointX="0.75" PointY="7.5" />
-        <AssociationConnector Association="WeatherApp_dbModel.FK_forecastday_location" />
         <EntityTypeShape EntityType="WeatherApp_dbModel.authToken" Width="1.5" PointX="8" PointY="2.75" />
         <AssociationConnector Association="WeatherApp_dbModel.FK_authToken_user" />
-      </Diagram>
+        <EntityTypeShape EntityType="WeatherApp_dbModel.forecastday" Width="1.5" PointX="3" PointY="6.25" />
+        <AssociationConnector Association="WeatherApp_dbModel.FK_forecastday_location" />
+        <AssociationConnector Association="WeatherApp_dbModel.FK_forecasthour_day" />
+        </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>

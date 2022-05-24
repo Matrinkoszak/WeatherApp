@@ -26,11 +26,8 @@ namespace WeatherAppAPI.Models
         public Nullable<decimal> min_temp { get; set; }
         public Nullable<decimal> avg_temp { get; set; }
         public Nullable<decimal> max_wind { get; set; }
-        public Nullable<decimal> min_wind { get; set; }
-        public Nullable<decimal> avg_wind { get; set; }
-        public Nullable<decimal> total_precision { get; set; }
         public Nullable<decimal> avg_visibility { get; set; }
-        public Nullable<int> avg_humidity { get; set; }
+        public Nullable<decimal> avg_humidity { get; set; }
         public string condition { get; set; }
         public Nullable<System.DateTime> sunrise { get; set; }
         public Nullable<System.DateTime> sunset { get; set; }
@@ -40,8 +37,8 @@ namespace WeatherAppAPI.Models
         public Nullable<int> moon_illumination { get; set; }
         public long location_id { get; set; }
     
+        public virtual location location { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<forecasthour> forecasthour { get; set; }
-        public virtual location location { get; set; }
     }
 }

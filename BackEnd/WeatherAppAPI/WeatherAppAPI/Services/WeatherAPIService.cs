@@ -34,7 +34,7 @@ namespace WeatherAppAPI.Services
                 if (response.IsSuccessStatusCode)
                 {
                     // Parse the response body.
-                    var dataObjects = response.Content.ReadAsStringAsync().Result;// ReadAsAsync<IEnumerable<forecastday>>().Result;
+                    var dataObjects = response.Content.ReadAsAsync<IEnumerable<WeatherAPIResponseModel>>().Result;
                     return  Jso dataObjects
                 }
                 else
@@ -54,6 +54,63 @@ namespace WeatherAppAPI.Services
             client.Dispose();
         }
 
+        private forecastday TranslateAPIModelToDBModel(WeatherAPIResponseModel model, DateTime date)
+        {
+            try
+            {
+                forecastday result = new forecastday();
+                WeatherAPIForecastdayModel dayModel = model.forecast.forecastday.Where(x => DateTime.Parse(x.date).CompareTo(date) == 0).FirstOrDefault();
+                if(dayModel != null)
+                {
+                    result.date = DateTime.Parse(dayModel.date);
+                    result.max_wind = dayModel.day.maxwind_kph;
+                    result.avg_humidity = dayModel.day.avghumidity;
+                    result.avg_visibility = dayModel.day.avgvis_km;
+                    result.avg_temp = dayModel.day.avgtemp_c;
+                    result.condition = dayModel.day.condition.text;
+                    result.max_temp = dayModel.day.maxtemp_c;
+                    result.min_temp = dayModel.day.mintemp_c;
+                    result.moonphase = dayModel.astro.moon_phase;
+                    result.moonrise = DateTime.Parse(dayModel.astro.moonrise);
+                    result.moonset = DateTime.Parse(dayModel.astro.moonset);
+                    result.moon_illumination = Int32.Parse(dayModel.astro.moon_illumination);
+                    result.sunrise = DateTime.Parse(dayModel.astro.sunrise);
+                    result.sunset = DateTime.Parse(dayModel.astro.sunset);
 
+                    result.location = new location();
+                    result.location.name = model.location.name;
+                    result.location.latitude = model.location.lat;
+                    result.location.longitude = model.location.lon;
+
+                    foreach(var hour in dayModel.hour)
+                    {
+                        forecasthour forecasthour = new forecasthour();
+                        forecasthour.cloud_coverage = hour.cloud;
+                        forecasthour.condition = hour.condition.text;
+                        forecasthour.humidity = hour.humidity;
+                        forecasthour.pressure = hour.pressure_mb;
+                        forecasthour.rain = hour.will_it_rain == 1;
+                        forecasthour.snow = hour.will_it_snow == 1;
+                        forecasthour.temp = hour.temp_c;
+                        forecasthour.time = DateTime.Parse(hour.time);
+                        forecasthour.visibility = hour.vis_km;
+                        forecasthour.wind_direction = hour.wind_dir;
+                        forecasthour.wind_speed = hour.wind_kph;
+                        result.forecasthour.Add(forecasthour);
+                    }
+
+                    return result;
+
+                }
+                else
+                {
+                    throw new Exception("Forecast wasn't properly downloaded from 3rd party API");
+                }
+            }
+            catch
+            {
+                throw;
+            }
+        }
     }
 }

@@ -26,10 +26,10 @@ namespace WeatherAppAPI.Models
         }
     
         public virtual DbSet<C__RefactorLog> C__RefactorLog { get; set; }
-        public virtual DbSet<forecastday> forecastday { get; set; }
         public virtual DbSet<forecasthour> forecasthour { get; set; }
         public virtual DbSet<User> User { get; set; }
         public virtual DbSet<location> location { get; set; }
         public virtual DbSet<authToken> authToken { get; set; }
+        public virtual DbSet<forecastday> forecastday { get; set; }
     }
 }

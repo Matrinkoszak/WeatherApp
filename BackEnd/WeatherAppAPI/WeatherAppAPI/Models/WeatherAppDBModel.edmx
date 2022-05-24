@@ -31,11 +31,8 @@
           <Property Name="min_temp" Type="decimal" Precision="18" Scale="2" />
           <Property Name="avg_temp" Type="decimal" Precision="18" Scale="2" />
           <Property Name="max_wind" Type="decimal" Precision="18" Scale="2" />
-          <Property Name="min_wind" Type="decimal" Precision="18" Scale="2" />
-          <Property Name="avg_wind" Type="decimal" Precision="18" Scale="2" />
-          <Property Name="total_precision" Type="decimal" Precision="18" Scale="2" />
           <Property Name="avg_visibility" Type="decimal" Precision="18" Scale="4" />
-          <Property Name="avg_humidity" Type="int" />
+          <Property Name="avg_humidity" Type="decimal" Precision="18" Scale="2" />
           <Property Name="condition" Type="nvarchar" MaxLength="55" />
           <Property Name="sunrise" Type="datetime" />
           <Property Name="sunset" Type="datetime" />
@@ -148,32 +145,6 @@
           </Key>
           <Property Name="OperationKey" Type="Guid" Nullable="false" />
         </EntityType>
-        <EntityType Name="forecastday">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="date" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="max_temp" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="min_temp" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="avg_temp" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="max_wind" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="min_wind" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="avg_wind" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="total_precision" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="avg_visibility" Type="Decimal" Precision="18" Scale="4" />
-          <Property Name="avg_humidity" Type="Int32" />
-          <Property Name="condition" Type="String" MaxLength="55" FixedLength="false" Unicode="true" />
-          <Property Name="sunrise" Type="DateTime" Precision="3" />
-          <Property Name="sunset" Type="DateTime" Precision="3" />
-          <Property Name="moonrise" Type="DateTime" Precision="3" />
-          <Property Name="moonset" Type="DateTime" Precision="3" />
-          <Property Name="moonphase" Type="String" MaxLength="55" FixedLength="false" Unicode="true" />
-          <Property Name="moon_illumination" Type="Int32" />
-          <NavigationProperty Name="forecasthour" Relationship="Self.FK_forecasthour_day" FromRole="forecastday" ToRole="forecasthour" />
-          <Property Name="location_id" Type="Int64" Nullable="false" />
-          <NavigationProperty Name="location" Relationship="WeatherApp_dbModel.FK_forecastday_location" FromRole="forecastday" ToRole="location" />
-        </EntityType>
         <EntityType Name="forecasthour">
           <Key>
             <PropertyRef Name="Id" />
@@ -191,7 +162,7 @@
           <Property Name="visibility" Type="Decimal" Precision="18" Scale="4" />
           <Property Name="rain" Type="Boolean" />
           <Property Name="snow" Type="Boolean" />
-          <NavigationProperty Name="forecastday" Relationship="Self.FK_forecasthour_day" FromRole="forecasthour" ToRole="forecastday" />
+          <NavigationProperty Name="forecastday" Relationship="WeatherApp_dbModel.FK_forecasthour_day" FromRole="forecasthours" ToRole="forecastday" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -202,38 +173,26 @@
           <Property Name="Display_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="IsAdmin" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="authToken" Relationship="WeatherApp_dbModel.FK_authToken_user" FromRole="User" ToRole="authToken" />
+          <NavigationProperty Name="authToken" Relationship="WeatherApp_dbModel.FK_authToken_user" FromRole="User" ToRole="authTokens" />
         </EntityType>
-        <Association Name="FK_forecasthour_day">
-          <End Role="forecastday" Type="Self.forecastday" Multiplicity="1" />
-          <End Role="forecasthour" Type="Self.forecasthour" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="forecastday">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="forecasthour">
-              <PropertyRef Name="forecastday_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityContainer Name="WeatherApp_dbEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="C__RefactorLog" EntityType="Self.C__RefactorLog" />
-          <EntitySet Name="forecastday" EntityType="Self.forecastday" />
           <EntitySet Name="forecasthour" EntityType="Self.forecasthour" />
           <EntitySet Name="User" EntityType="Self.User" />
-          <AssociationSet Name="FK_forecasthour_day" Association="Self.FK_forecasthour_day">
-            <End Role="forecastday" EntitySet="forecastday" />
-            <End Role="forecasthour" EntitySet="forecasthour" />
-          </AssociationSet>
           <EntitySet Name="location" EntityType="WeatherApp_dbModel.location" />
-          <AssociationSet Name="FK_forecastday_location" Association="WeatherApp_dbModel.FK_forecastday_location">
-            <End Role="location" EntitySet="location" />
-            <End Role="forecastday" EntitySet="forecastday" />
-          </AssociationSet>
           <EntitySet Name="authToken" EntityType="WeatherApp_dbModel.authToken" />
           <AssociationSet Name="FK_authToken_user" Association="WeatherApp_dbModel.FK_authToken_user">
             <End Role="User" EntitySet="User" />
-            <End Role="authToken" EntitySet="authToken" />
+            <End Role="authTokens" EntitySet="authToken" />
+          </AssociationSet>
+          <EntitySet Name="forecastday" EntityType="WeatherApp_dbModel.forecastday" />
+          <AssociationSet Name="FK_forecastday_location" Association="WeatherApp_dbModel.FK_forecastday_location">
+            <End Role="location" EntitySet="location" />
+            <End Role="forecastdays" EntitySet="forecastday" />
+          </AssociationSet>
+          <AssociationSet Name="FK_forecasthour_day" Association="WeatherApp_dbModel.FK_forecasthour_day">
+            <End Role="forecastday" EntitySet="forecastday" />
+            <End Role="forecasthours" EntitySet="forecasthour" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="location">
@@ -244,20 +203,8 @@
           <Property Name="name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="latitude" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
           <Property Name="longitude" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
-          <NavigationProperty Name="forecastday" Relationship="WeatherApp_dbModel.FK_forecastday_location" FromRole="location" ToRole="forecastday" />
+          <NavigationProperty Name="forecastday" Relationship="WeatherApp_dbModel.FK_forecastday_location" FromRole="location" ToRole="forecastdays" />
         </EntityType>
-        <Association Name="FK_forecastday_location">
-          <End Type="WeatherApp_dbModel.location" Role="location" Multiplicity="1" />
-          <End Type="WeatherApp_dbModel.forecastday" Role="forecastday" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="location">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="forecastday">
-              <PropertyRef Name="location_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="authToken">
           <Key>
             <PropertyRef Name="Id" />
@@ -267,17 +214,64 @@
           <Property Name="terminationDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="user_id" Type="Int64" Nullable="false" />
           <Property Name="code" Type="String" Nullable="false" MaxLength="155" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="User" Relationship="WeatherApp_dbModel.FK_authToken_user" FromRole="authToken" ToRole="User" />
+          <NavigationProperty Name="User" Relationship="WeatherApp_dbModel.FK_authToken_user" FromRole="authTokens" ToRole="User" />
         </EntityType>
         <Association Name="FK_authToken_user">
           <End Type="WeatherApp_dbModel.User" Role="User" Multiplicity="1" />
-          <End Type="WeatherApp_dbModel.authToken" Role="authToken" Multiplicity="*" />
+          <End Type="WeatherApp_dbModel.authToken" Role="authTokens" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="User">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="authToken">
+            <Dependent Role="authTokens">
               <PropertyRef Name="user_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="forecastday">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="max_temp" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="min_temp" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="avg_temp" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="max_wind" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="avg_visibility" Type="Decimal" Precision="18" Scale="4" />
+          <Property Name="avg_humidity" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="condition" Type="String" MaxLength="55" FixedLength="false" Unicode="true" />
+          <Property Name="sunrise" Type="DateTime" Precision="3" />
+          <Property Name="sunset" Type="DateTime" Precision="3" />
+          <Property Name="moonrise" Type="DateTime" Precision="3" />
+          <Property Name="moonset" Type="DateTime" Precision="3" />
+          <Property Name="moonphase" Type="String" MaxLength="55" FixedLength="false" Unicode="true" />
+          <Property Name="moon_illumination" Type="Int32" />
+          <Property Name="location_id" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="location" Relationship="WeatherApp_dbModel.FK_forecastday_location" FromRole="forecastdays" ToRole="location" />
+          <NavigationProperty Name="forecasthour" Relationship="WeatherApp_dbModel.FK_forecasthour_day" FromRole="forecastday" ToRole="forecasthours" />
+        </EntityType>
+        <Association Name="FK_forecastday_location">
+          <End Type="WeatherApp_dbModel.location" Role="location" Multiplicity="1" />
+          <End Type="WeatherApp_dbModel.forecastday" Role="forecastdays" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="location">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="forecastdays">
+              <PropertyRef Name="location_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_forecasthour_day">
+          <End Type="WeatherApp_dbModel.forecastday" Role="forecastday" Multiplicity="1" />
+          <End Type="WeatherApp_dbModel.forecasthour" Role="forecasthours" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="forecastday">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="forecasthours">
+              <PropertyRef Name="forecastday_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -291,31 +285,6 @@
             <EntityTypeMapping TypeName="WeatherApp_dbModel.C__RefactorLog">
               <MappingFragment StoreEntitySet="__RefactorLog">
                 <ScalarProperty Name="OperationKey" ColumnName="OperationKey" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="forecastday">
-            <EntityTypeMapping TypeName="WeatherApp_dbModel.forecastday">
-              <MappingFragment StoreEntitySet="forecastday">
-                <ScalarProperty Name="location_id" ColumnName="location_id" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="date" ColumnName="date" />
-                <ScalarProperty Name="max_temp" ColumnName="max_temp" />
-                <ScalarProperty Name="min_temp" ColumnName="min_temp" />
-                <ScalarProperty Name="avg_temp" ColumnName="avg_temp" />
-                <ScalarProperty Name="max_wind" ColumnName="max_wind" />
-                <ScalarProperty Name="min_wind" ColumnName="min_wind" />
-                <ScalarProperty Name="avg_wind" ColumnName="avg_wind" />
-                <ScalarProperty Name="total_precision" ColumnName="total_precision" />
-                <ScalarProperty Name="avg_visibility" ColumnName="avg_visibility" />
-                <ScalarProperty Name="avg_humidity" ColumnName="avg_humidity" />
-                <ScalarProperty Name="condition" ColumnName="condition" />
-                <ScalarProperty Name="sunrise" ColumnName="sunrise" />
-                <ScalarProperty Name="sunset" ColumnName="sunset" />
-                <ScalarProperty Name="moonrise" ColumnName="moonrise" />
-                <ScalarProperty Name="moonset" ColumnName="moonset" />
-                <ScalarProperty Name="moonphase" ColumnName="moonphase" />
-                <ScalarProperty Name="moon_illumination" ColumnName="moon_illumination" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -366,6 +335,28 @@
                 <ScalarProperty Name="user_id" ColumnName="user_id" />
                 <ScalarProperty Name="terminationDate" ColumnName="terminationDate" />
                 <ScalarProperty Name="creationDate" ColumnName="creationDate" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="forecastday">
+            <EntityTypeMapping TypeName="WeatherApp_dbModel.forecastday">
+              <MappingFragment StoreEntitySet="forecastday">
+                <ScalarProperty Name="location_id" ColumnName="location_id" />
+                <ScalarProperty Name="moon_illumination" ColumnName="moon_illumination" />
+                <ScalarProperty Name="moonphase" ColumnName="moonphase" />
+                <ScalarProperty Name="moonset" ColumnName="moonset" />
+                <ScalarProperty Name="moonrise" ColumnName="moonrise" />
+                <ScalarProperty Name="sunset" ColumnName="sunset" />
+                <ScalarProperty Name="sunrise" ColumnName="sunrise" />
+                <ScalarProperty Name="condition" ColumnName="condition" />
+                <ScalarProperty Name="avg_humidity" ColumnName="avg_humidity" />
+                <ScalarProperty Name="avg_visibility" ColumnName="avg_visibility" />
+                <ScalarProperty Name="max_wind" ColumnName="max_wind" />
+                <ScalarProperty Name="avg_temp" ColumnName="avg_temp" />
+                <ScalarProperty Name="min_temp" ColumnName="min_temp" />
+                <ScalarProperty Name="max_temp" ColumnName="max_temp" />
+                <ScalarProperty Name="date" ColumnName="date" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
