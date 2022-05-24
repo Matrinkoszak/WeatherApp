@@ -132,8 +132,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\authTokensController.cs" />
     <Compile Include="Controllers\forecastdaysController.cs" />
     <Compile Include="Controllers\locationsController.cs" />
+    <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -179,6 +181,7 @@
       <DependentUpon>WeatherAppDBModel.edmx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\SecurityService.cs" />
     <Compile Include="Services\WeatherAPIService.cs" />
   </ItemGroup>
   <ItemGroup>
