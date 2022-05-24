@@ -13,7 +13,7 @@ namespace WeatherAppAPI.Services
     public class WeatherAPIService : IDisposable
     {
         private HttpClient client { get; set; }
-        private const string URL = "http://api.weatherapi.com/v1/history.json";
+        private const string URL = "http://api.weatherapi.com/v1/";
         private string keyParameter = "?key=c1675cf7add745c4bf9210718222305";
 
         public WeatherAPIService()
@@ -29,13 +29,36 @@ namespace WeatherAppAPI.Services
         {
             try
             {
-                string urlParameters = keyParameter + "&q=" + latitude.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture) + "," + longitude.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture) + "&dt=" + date.ToString("yyyy-MM-dd");
+                string urlParameters = "history.json"+keyParameter + "&q=" + latitude.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture) + "," + longitude.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture) + "&dt=" + date.ToString("yyyy-MM-dd");
                 HttpResponseMessage response = client.GetAsync(urlParameters).Result;  // Blocking call! Program will wait here until a response is received or a timeout occurs.
                 if (response.IsSuccessStatusCode)
                 {
                     // Parse the response body.
                     var dataObjects = response.Content.ReadAsAsync<WeatherAPIResponseModel>().Result;
                     return TranslateAPIModelToDBModel(dataObjects, date);
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch
+            {
+                throw;
+            }
+
+        }
+        public location GetLocationData(string name)
+        {
+            try
+            {
+                string urlParameters = "search.json"+keyParameter + "&q=" + name;
+                HttpResponseMessage response = client.GetAsync(urlParameters).Result;  // Blocking call! Program will wait here until a response is received or a timeout occurs.
+                if (response.IsSuccessStatusCode)
+                {
+                    // Parse the response body.
+                    var dataObjects = response.Content.ReadAsAsync<IEnumerable<WeatherAPILocationModel>>().Result;
+                    return TranslateLocationAPIModelToDBModel(dataObjects, name);
                 }
                 else
                 {
@@ -105,6 +128,32 @@ namespace WeatherAppAPI.Services
                 else
                 {
                     throw new Exception("Forecast wasn't properly downloaded from 3rd party API");
+                }
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        private location TranslateLocationAPIModelToDBModel(IEnumerable<WeatherAPILocationModel> model, string name)
+        {
+            try
+            {
+                location location = new location();
+                WeatherAPILocationModel locationModel = model.FirstOrDefault();
+                if (locationModel != null)
+                {
+                    location.latitude = locationModel.lat;
+                    location.longitude = locationModel.lon;
+                    location.name = name;
+
+                    return location;
+
+                }
+                else
+                {
+                    throw new Exception("Location wasn't properly downloaded from 3rd party API");
                 }
             }
             catch
