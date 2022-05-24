@@ -17,95 +17,133 @@ namespace WeatherAppAPI.Controllers
     {
         private WeatherApp_dbEntities db = new WeatherApp_dbEntities();
 
-        
+
 
         // GET: api/Users/5
+        [Route("api/users/{token}/{id}")]
         [ResponseType(typeof(User))]
-        public IHttpActionResult GetUser(long id)
+        public IHttpActionResult GetUser(string token, long id)
         {
-            User user = db.User.Find(id);
-            if (user == null)
+            using (var serv = new SecurityService(db))
             {
-                return NotFound();
-            }
-            user.Password = null;
-            return Ok(user);
-        }
-
-        // PUT: api/Users/5
-        [ResponseType(typeof(void))]
-        public IHttpActionResult PutUser(long id, User user)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            if (id != user.Id)
-            {
-                return BadRequest();
-            }
-
-            using(var serv = new SecurityService(db))
-            {
-                user.Password = serv.GetHashString(user.Password);
-            }
-
-            db.Entry(user).State = EntityState.Modified;
-
-            try
-            {
-                db.SaveChanges();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!UserExists(id))
+                if (serv.IsTokenValid(token))
                 {
-                    return NotFound();
+                    User user = db.User.Find(id);
+                    if (user == null)
+                    {
+                        return NotFound();
+                    }
+                    user.Password = null;
+                    return Ok(user);
                 }
                 else
                 {
-                    throw;
+                    return Unauthorized();
                 }
             }
+        }
 
-            return StatusCode(HttpStatusCode.NoContent);
+        // PUT: api/Users/5
+        [Route("api/users/{token}/{id}")]
+        [ResponseType(typeof(void))]
+        public IHttpActionResult PutUser(string token,long id, User user)
+        {
+            using (var serv = new SecurityService(db))
+            {
+                if (serv.IsTokenValid(token))
+                {
+                    if (!ModelState.IsValid)
+                    {
+                        return BadRequest(ModelState);
+                    }
+
+                    if (id != user.Id)
+                    {
+                        return BadRequest();
+                    }
+
+                      user.Password = serv.GetHashString(user.Password);
+
+                    db.Entry(user).State = EntityState.Modified;
+
+                    try
+                    {
+                        db.SaveChanges();
+                    }
+                    catch (DbUpdateConcurrencyException)
+                    {
+                        if (!UserExists(id))
+                        {
+                            return NotFound();
+                        }
+                        else
+                        {
+                            throw;
+                        }
+                    }
+
+                    return StatusCode(HttpStatusCode.NoContent);
+                }
+                else
+                {
+                    return Unauthorized();
+                }
+            }
         }
 
         // POST: api/Users
+        [Route("api/users/{token}")]
         [ResponseType(typeof(User))]
-        public IHttpActionResult PostUser(User user)
+        public IHttpActionResult PostUser(string token, User user)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
             using (var serv = new SecurityService(db))
             {
-                user.Password = serv.GetHashString(user.Password);
+                if (serv.IsTokenValid(token))
+                {
+                    if (!ModelState.IsValid)
+                    {
+                        return BadRequest(ModelState);
+                    }
+
+                    user.Password = serv.GetHashString(user.Password);
+
+                    db.User.Add(user);
+                    db.SaveChanges();
+
+                    return CreatedAtRoute("DefaultApi", new { id = user.Id }, user);
+                }
+                else
+                {
+                    return Unauthorized();
+                }
             }
-
-            db.User.Add(user);
-            db.SaveChanges();
-
-            return CreatedAtRoute("DefaultApi", new { id = user.Id }, user);
         }
 
         // DELETE: api/Users/5
+        [Route("api/users/{token}/{id}")]
         [ResponseType(typeof(User))]
-        public IHttpActionResult DeleteUser(long id)
+        public IHttpActionResult DeleteUser(string token, long id)
         {
-            User user = db.User.Find(id);
-            if (user == null)
+            using (var serv = new SecurityService(db))
             {
-                return NotFound();
+                if (serv.IsTokenValid(token))
+                {
+                    User user = db.User.Find(id);
+                    if (user == null)
+                    {
+                        return NotFound();
+                    }
+
+                    db.User.Remove(user);
+                    db.SaveChanges();
+
+                    return Ok(user);
+                }
+                else
+                {
+                    return Unauthorized();
+                }
             }
-
-            db.User.Remove(user);
-            db.SaveChanges();
-
-            return Ok(user);
         }
 
         protected override void Dispose(bool disposing)
