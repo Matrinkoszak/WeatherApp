@@ -8,31 +8,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="forecastday">
-      <EntityTypeMapping TypeName="WeatherApp_dbModel.forecastday">
-        <MappingFragment StoreEntitySet="forecastday">
-          <ScalarProperty Name="location_id" ColumnName="location_id" />
-          <ScalarProperty Name="Id" ColumnName="Id" />
-          <ScalarProperty Name="date" ColumnName="date" />
-          <ScalarProperty Name="max_temp" ColumnName="max_temp" />
-          <ScalarProperty Name="min_temp" ColumnName="min_temp" />
-          <ScalarProperty Name="avg_temp" ColumnName="avg_temp" />
-          <ScalarProperty Name="max_wind" ColumnName="max_wind" />
-          <ScalarProperty Name="min_wind" ColumnName="min_wind" />
-          <ScalarProperty Name="avg_wind" ColumnName="avg_wind" />
-          <ScalarProperty Name="total_precision" ColumnName="total_precision" />
-          <ScalarProperty Name="avg_visibility" ColumnName="avg_visibility" />
-          <ScalarProperty Name="avg_humidity" ColumnName="avg_humidity" />
-          <ScalarProperty Name="condition" ColumnName="condition" />
-          <ScalarProperty Name="sunrise" ColumnName="sunrise" />
-          <ScalarProperty Name="sunset" ColumnName="sunset" />
-          <ScalarProperty Name="moonrise" ColumnName="moonrise" />
-          <ScalarProperty Name="moonset" ColumnName="moonset" />
-          <ScalarProperty Name="moonphase" ColumnName="moonphase" />
-          <ScalarProperty Name="moon_illumination" ColumnName="moon_illumination" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="forecasthour">
       <EntityTypeMapping TypeName="WeatherApp_dbModel.forecasthour">
         <MappingFragment StoreEntitySet="forecasthour">
@@ -80,6 +55,28 @@
           <ScalarProperty Name="user_id" ColumnName="user_id" />
           <ScalarProperty Name="terminationDate" ColumnName="terminationDate" />
           <ScalarProperty Name="creationDate" ColumnName="creationDate" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="forecastday">
+      <EntityTypeMapping TypeName="WeatherApp_dbModel.forecastday">
+        <MappingFragment StoreEntitySet="forecastday">
+          <ScalarProperty Name="location_id" ColumnName="location_id" />
+          <ScalarProperty Name="moon_illumination" ColumnName="moon_illumination" />
+          <ScalarProperty Name="moonphase" ColumnName="moonphase" />
+          <ScalarProperty Name="moonset" ColumnName="moonset" />
+          <ScalarProperty Name="moonrise" ColumnName="moonrise" />
+          <ScalarProperty Name="sunset" ColumnName="sunset" />
+          <ScalarProperty Name="sunrise" ColumnName="sunrise" />
+          <ScalarProperty Name="condition" ColumnName="condition" />
+          <ScalarProperty Name="avg_humidity" ColumnName="avg_humidity" />
+          <ScalarProperty Name="avg_visibility" ColumnName="avg_visibility" />
+          <ScalarProperty Name="max_wind" ColumnName="max_wind" />
+          <ScalarProperty Name="avg_temp" ColumnName="avg_temp" />
+          <ScalarProperty Name="min_temp" ColumnName="min_temp" />
+          <ScalarProperty Name="max_temp" ColumnName="max_temp" />
+          <ScalarProperty Name="date" ColumnName="date" />
           <ScalarProperty Name="Id" ColumnName="Id" />
         </MappingFragment>
       </EntityTypeMapping>

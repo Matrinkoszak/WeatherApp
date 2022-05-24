@@ -13,7 +13,7 @@ namespace WeatherAppAPI.Services
     public class WeatherAPIService : IDisposable
     {
         private HttpClient client { get; set; }
-        private const string URL = "http://api.weatherapi.com/v1/current.json";
+        private const string URL = "http://api.weatherapi.com/v1/history.json";
         private string keyParameter = "?key=c1675cf7add745c4bf9210718222305";
 
         public WeatherAPIService()
@@ -29,13 +29,13 @@ namespace WeatherAppAPI.Services
         {
             try
             {
-                string urlParameters = keyParameter + "&q=" + latitude.ToString() + "," + longitude.ToString() + "&dt=" + date.ToString("yyyy-MM-dd");
+                string urlParameters = keyParameter + "&q=" + latitude.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture) + "," + longitude.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture) + "&dt=" + date.ToString("yyyy-MM-dd");
                 HttpResponseMessage response = client.GetAsync(urlParameters).Result;  // Blocking call! Program will wait here until a response is received or a timeout occurs.
                 if (response.IsSuccessStatusCode)
                 {
                     // Parse the response body.
-                    var dataObjects = response.Content.ReadAsAsync<IEnumerable<WeatherAPIResponseModel>>().Result;
-                    return TranslateAPIModelToDBModel(dataObjects.FirstOrDefault(), date);
+                    var dataObjects = response.Content.ReadAsAsync<WeatherAPIResponseModel>().Result;
+                    return TranslateAPIModelToDBModel(dataObjects, date);
                 }
                 else
                 {

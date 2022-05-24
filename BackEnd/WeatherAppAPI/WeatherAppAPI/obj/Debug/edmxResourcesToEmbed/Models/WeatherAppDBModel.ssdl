@@ -26,11 +26,8 @@
     <Property Name="min_temp" Type="decimal" Precision="18" Scale="2" />
     <Property Name="avg_temp" Type="decimal" Precision="18" Scale="2" />
     <Property Name="max_wind" Type="decimal" Precision="18" Scale="2" />
-    <Property Name="min_wind" Type="decimal" Precision="18" Scale="2" />
-    <Property Name="avg_wind" Type="decimal" Precision="18" Scale="2" />
-    <Property Name="total_precision" Type="decimal" Precision="18" Scale="2" />
     <Property Name="avg_visibility" Type="decimal" Precision="18" Scale="4" />
-    <Property Name="avg_humidity" Type="int" />
+    <Property Name="avg_humidity" Type="decimal" Precision="18" Scale="2" />
     <Property Name="condition" Type="nvarchar" MaxLength="55" />
     <Property Name="sunrise" Type="datetime" />
     <Property Name="sunset" Type="datetime" />

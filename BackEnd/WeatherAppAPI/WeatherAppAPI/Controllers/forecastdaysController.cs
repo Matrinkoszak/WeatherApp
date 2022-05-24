@@ -27,12 +27,13 @@ namespace WeatherAppAPI.Controllers
             DateTime dayTime = DateTime.Parse(day);
             if(dayTime != null)
             {
-                forecastday forecastday = db.forecastday.Where(x => (x.location.name.Equals(locationName)) && (x.date.Date.Equals(dayTime.Date))).FirstOrDefault();
+                forecastday forecastday = db.forecastday.Where(x => (x.location.name.Equals(locationName)) && (x.date.Equals(dayTime))).FirstOrDefault();
                 if (forecastday == null)
                 {
                     return NotFound();
                 }
-
+                //self-referencing is properly handled, but I decided returning all forecastdays for the location is too much data for this request, therefore instead the return of that field is null
+                forecastday.location.forecastday = null;
                 return Ok(forecastday);
             }
             else
@@ -87,10 +88,46 @@ namespace WeatherAppAPI.Controllers
                     }
                     using(WeatherAPIService serv = new WeatherAPIService())
                     {
-
+                        forecastday downloadedDay = serv.GetForecastDayData(forecastDay.location.latitude, forecastDay.location.longitude, start.Date);
+                        forecastDay.avg_humidity = downloadedDay.avg_humidity;
+                        forecastDay.avg_temp = downloadedDay.avg_temp;
+                        forecastDay.avg_visibility = downloadedDay.avg_visibility;
+                        forecastDay.condition = downloadedDay.condition;
+                        forecastDay.max_temp = downloadedDay.max_temp;
+                        forecastDay.max_wind = downloadedDay.max_wind;
+                        forecastDay.min_temp = downloadedDay.min_temp;
+                        forecastDay.moonphase = downloadedDay.moonphase;
+                        forecastDay.moonrise = downloadedDay.moonrise;
+                        forecastDay.moonset = downloadedDay.moonset;
+                        forecastDay.moon_illumination = downloadedDay.moon_illumination;
+                        forecastDay.sunrise = downloadedDay.sunrise;
+                        forecastDay.sunset = downloadedDay.sunset;
+                        foreach(var downloadedHour in downloadedDay.forecasthour)
+                        {
+                            forecasthour hour = forecastDay.forecasthour.Where(x => x.time.CompareTo(downloadedHour.time) == 0).FirstOrDefault();
+                            if(hour == null)
+                            {
+                                hour = new forecasthour();
+                                hour.forecastday = forecastDay;
+                                hour.time = downloadedHour.time;
+                                db.forecasthour.Add(hour);
+                            }
+                            hour.cloud_coverage = downloadedHour.cloud_coverage;
+                            hour.condition = downloadedHour.condition;
+                            hour.humidity = downloadedHour.humidity;
+                            hour.pressure = downloadedHour.pressure;
+                            hour.rain = downloadedHour.rain;
+                            hour.snow = downloadedHour.snow;
+                            hour.temp = downloadedHour.temp;
+                            hour.visibility = downloadedHour.visibility;
+                            hour.wind_direction = downloadedHour.wind_direction;
+                            hour.wind_speed = downloadedHour.wind_speed;
+                        }
                     }
                     db.SaveChanges();
+                    start = start.AddDays(1);
                 }
+                return Ok();
             }
             return BadRequest();
         }
@@ -107,6 +144,11 @@ namespace WeatherAppAPI.Controllers
         private bool forecastdayExists(long id)
         {
             return db.forecastday.Count(e => e.Id == id) > 0;
+        }
+
+        private bool dateEqualityHelper(DateTime main, DateTime comparing)
+        {
+            return main.Date.CompareTo(comparing) == 0;
         }
     }
 }
