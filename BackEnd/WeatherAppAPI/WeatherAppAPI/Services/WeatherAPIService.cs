@@ -35,7 +35,7 @@ namespace WeatherAppAPI.Services
                 {
                     // Parse the response body.
                     var dataObjects = response.Content.ReadAsAsync<IEnumerable<WeatherAPIResponseModel>>().Result;
-                    return  Jso dataObjects
+                    return TranslateAPIModelToDBModel(dataObjects.FirstOrDefault(), date);
                 }
                 else
                 {
