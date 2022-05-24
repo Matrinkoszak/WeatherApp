@@ -11,6 +11,16 @@
           </Key>
           <Property Name="OperationKey" Type="uniqueidentifier" Nullable="false" />
         </EntityType>
+        <EntityType Name="authToken">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="creationDate" Type="datetime" Nullable="false" />
+          <Property Name="terminationDate" Type="datetime" Nullable="false" />
+          <Property Name="user_id" Type="bigint" Nullable="false" />
+          <Property Name="code" Type="nvarchar" MaxLength="155" Nullable="false" />
+        </EntityType>
         <EntityType Name="forecastday">
           <Key>
             <PropertyRef Name="Id" />
@@ -72,6 +82,18 @@
           <Property Name="Password" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="IsAdmin" Type="bit" Nullable="false" />
         </EntityType>
+        <Association Name="FK_authToken_user">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="authToken" Type="Self.authToken" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="authToken">
+              <PropertyRef Name="user_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_forecastday_location">
           <End Role="location" Type="Self.location" Multiplicity="1" />
           <End Role="forecastday" Type="Self.forecastday" Multiplicity="*" />
@@ -98,10 +120,15 @@
         </Association>
         <EntityContainer Name="WeatherApp_dbModelStoreContainer">
           <EntitySet Name="__RefactorLog" EntityType="Self.__RefactorLog" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="authToken" EntityType="Self.authToken" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="forecastday" EntityType="Self.forecastday" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="forecasthour" EntityType="Self.forecasthour" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="location" EntityType="Self.location" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_authToken_user" Association="Self.FK_authToken_user">
+            <End Role="User" EntitySet="User" />
+            <End Role="authToken" EntitySet="authToken" />
+          </AssociationSet>
           <AssociationSet Name="FK_forecastday_location" Association="Self.FK_forecastday_location">
             <End Role="location" EntitySet="location" />
             <End Role="forecastday" EntitySet="forecastday" />
@@ -175,6 +202,7 @@
           <Property Name="Display_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="IsAdmin" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="authToken" Relationship="WeatherApp_dbModel.FK_authToken_user" FromRole="User" ToRole="authToken" />
         </EntityType>
         <Association Name="FK_forecasthour_day">
           <End Role="forecastday" Type="Self.forecastday" Multiplicity="1" />
@@ -202,6 +230,11 @@
             <End Role="location" EntitySet="location" />
             <End Role="forecastday" EntitySet="forecastday" />
           </AssociationSet>
+          <EntitySet Name="authToken" EntityType="WeatherApp_dbModel.authToken" />
+          <AssociationSet Name="FK_authToken_user" Association="WeatherApp_dbModel.FK_authToken_user">
+            <End Role="User" EntitySet="User" />
+            <End Role="authToken" EntitySet="authToken" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="location">
           <Key>
@@ -222,6 +255,29 @@
             </Principal>
             <Dependent Role="forecastday">
               <PropertyRef Name="location_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="authToken">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="creationDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="terminationDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="user_id" Type="Int64" Nullable="false" />
+          <Property Name="code" Type="String" Nullable="false" MaxLength="155" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="User" Relationship="WeatherApp_dbModel.FK_authToken_user" FromRole="authToken" ToRole="User" />
+        </EntityType>
+        <Association Name="FK_authToken_user">
+          <End Type="WeatherApp_dbModel.User" Role="User" Multiplicity="1" />
+          <End Type="WeatherApp_dbModel.authToken" Role="authToken" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="authToken">
+              <PropertyRef Name="user_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -299,6 +355,17 @@
                 <ScalarProperty Name="longitude" ColumnName="longitude" />
                 <ScalarProperty Name="latitude" ColumnName="latitude" />
                 <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="authToken">
+            <EntityTypeMapping TypeName="WeatherApp_dbModel.authToken">
+              <MappingFragment StoreEntitySet="authToken">
+                <ScalarProperty Name="code" ColumnName="code" />
+                <ScalarProperty Name="user_id" ColumnName="user_id" />
+                <ScalarProperty Name="terminationDate" ColumnName="terminationDate" />
+                <ScalarProperty Name="creationDate" ColumnName="creationDate" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

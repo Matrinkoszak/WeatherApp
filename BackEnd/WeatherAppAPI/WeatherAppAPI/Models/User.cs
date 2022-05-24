@@ -14,10 +14,19 @@ namespace WeatherAppAPI.Models
     
     public partial class User
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public User()
+        {
+            this.authToken = new HashSet<authToken>();
+        }
+    
         public long Id { get; set; }
         public string Login { get; set; }
         public string Display_Name { get; set; }
         public string Password { get; set; }
         public bool IsAdmin { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<authToken> authToken { get; set; }
     }
 }

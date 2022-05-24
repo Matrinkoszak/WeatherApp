@@ -73,5 +73,16 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="authToken">
+      <EntityTypeMapping TypeName="WeatherApp_dbModel.authToken">
+        <MappingFragment StoreEntitySet="authToken">
+          <ScalarProperty Name="code" ColumnName="code" />
+          <ScalarProperty Name="user_id" ColumnName="user_id" />
+          <ScalarProperty Name="terminationDate" ColumnName="terminationDate" />
+          <ScalarProperty Name="creationDate" ColumnName="creationDate" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>

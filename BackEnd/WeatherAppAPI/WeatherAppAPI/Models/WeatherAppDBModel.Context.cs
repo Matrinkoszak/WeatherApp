@@ -30,5 +30,6 @@ namespace WeatherAppAPI.Models
         public virtual DbSet<forecasthour> forecasthour { get; set; }
         public virtual DbSet<User> User { get; set; }
         public virtual DbSet<location> location { get; set; }
+        public virtual DbSet<authToken> authToken { get; set; }
     }
 }

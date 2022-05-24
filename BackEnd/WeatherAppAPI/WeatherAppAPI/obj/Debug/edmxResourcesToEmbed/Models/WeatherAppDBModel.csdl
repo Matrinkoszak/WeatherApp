@@ -60,6 +60,7 @@
     <Property Name="Display_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
     <Property Name="IsAdmin" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="authToken" Relationship="WeatherApp_dbModel.FK_authToken_user" FromRole="User" ToRole="authToken" />
   </EntityType>
   <Association Name="FK_forecasthour_day">
     <End Role="forecastday" Type="Self.forecastday" Multiplicity="1" />
@@ -87,6 +88,11 @@
       <End Role="location" EntitySet="location" />
       <End Role="forecastday" EntitySet="forecastday" />
     </AssociationSet>
+    <EntitySet Name="authToken" EntityType="WeatherApp_dbModel.authToken" />
+    <AssociationSet Name="FK_authToken_user" Association="WeatherApp_dbModel.FK_authToken_user">
+      <End Role="User" EntitySet="User" />
+      <End Role="authToken" EntitySet="authToken" />
+    </AssociationSet>
   </EntityContainer>
   <EntityType Name="location">
     <Key>
@@ -107,6 +113,29 @@
       </Principal>
       <Dependent Role="forecastday">
         <PropertyRef Name="location_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="authToken">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="creationDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="terminationDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="user_id" Type="Int64" Nullable="false" />
+    <Property Name="code" Type="String" Nullable="false" MaxLength="155" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="User" Relationship="WeatherApp_dbModel.FK_authToken_user" FromRole="authToken" ToRole="User" />
+  </EntityType>
+  <Association Name="FK_authToken_user">
+    <End Type="WeatherApp_dbModel.User" Role="User" Multiplicity="1" />
+    <End Type="WeatherApp_dbModel.authToken" Role="authToken" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="authToken">
+        <PropertyRef Name="user_id" />
       </Dependent>
     </ReferentialConstraint>
   </Association>

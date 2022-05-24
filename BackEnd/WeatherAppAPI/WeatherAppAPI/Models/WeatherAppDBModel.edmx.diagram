@@ -12,6 +12,8 @@
         <AssociationConnector Association="WeatherApp_dbModel.FK_forecasthour_day" ManuallyRouted="false" />
         <EntityTypeShape EntityType="WeatherApp_dbModel.location" Width="1.5" PointX="0.75" PointY="7.5" />
         <AssociationConnector Association="WeatherApp_dbModel.FK_forecastday_location" />
+        <EntityTypeShape EntityType="WeatherApp_dbModel.authToken" Width="1.5" PointX="8" PointY="2.75" />
+        <AssociationConnector Association="WeatherApp_dbModel.FK_authToken_user" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
