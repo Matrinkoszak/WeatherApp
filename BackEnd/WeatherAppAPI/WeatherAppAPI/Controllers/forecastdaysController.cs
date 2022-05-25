@@ -91,7 +91,7 @@ namespace WeatherAppAPI.Controllers
         {
             using (var serv = new SecurityService(db))
             {
-                if (serv.IsTokenValid(token))
+                if (serv.IsTokenValid(token) && serv.IsTokenAdmin(token))
                 {
                     DateTime start = DateTime.Parse(startDate);
                     DateTime end = DateTime.Parse(endDate);

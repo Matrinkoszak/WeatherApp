@@ -66,6 +66,27 @@ namespace WeatherAppAPI.Services
             return false;
         }
 
+        public bool IsTokenAdmin(authToken token)
+        {
+            if (token.terminationDate.CompareTo(DateTime.UtcNow) <= 0 && token.User.IsAdmin)
+            {
+                token.terminationDate = DateTime.UtcNow.AddMinutes(30);
+                db.SaveChanges();
+                return true;
+            }
+            return false;
+        }
+
+        public bool IsTokenAdmin(string token)
+        {
+            var authToken = db.authToken.Where(x => x.code.Equals(token)).FirstOrDefault();
+            if (authToken != null)
+            {
+                return IsTokenAdmin(authToken);
+            }
+            return false;
+        }
+
         public void Dispose()
         {
         }

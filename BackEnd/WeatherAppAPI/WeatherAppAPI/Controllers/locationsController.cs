@@ -9,6 +9,7 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
 using WeatherAppAPI.Models;
+using WeatherAppAPI.Services;
 
 namespace WeatherAppAPI.Controllers
 {
@@ -16,89 +17,83 @@ namespace WeatherAppAPI.Controllers
     {
         private WeatherApp_dbEntities db = new WeatherApp_dbEntities();
 
-        // GET: api/locations
-        public IQueryable<location> Getlocation()
+        [Route("api/locations/{token}")]
+        [ResponseType(typeof(IQueryable<location>))]
+        public IHttpActionResult Getlocation(string token)
         {
-            return db.location;
-        }
-
-        // GET: api/locations/5
-        [ResponseType(typeof(location))]
-        public IHttpActionResult Getlocation(long id)
-        {
-            location location = db.location.Find(id);
-            if (location == null)
+            using (var serv = new SecurityService(db))
             {
-                return NotFound();
-            }
-
-            return Ok(location);
-        }
-
-        // PUT: api/locations/5
-        [ResponseType(typeof(void))]
-        public IHttpActionResult Putlocation(long id, location location)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            if (id != location.Id)
-            {
-                return BadRequest();
-            }
-
-            db.Entry(location).State = EntityState.Modified;
-
-            try
-            {
-                db.SaveChanges();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!locationExists(id))
+                if (serv.IsTokenValid(token))
                 {
-                    return NotFound();
+                    return Ok(db.location);
                 }
                 else
                 {
-                    throw;
+                    return Unauthorized();
+                }
+            }
+        }
+
+        [Route("api/locations/{token}/{name}")]
+        [ResponseType(typeof(location))]
+        public IHttpActionResult Getlocation(string token, string name)
+        {
+            using (var serv = new SecurityService(db))
+            {
+                if (serv.IsTokenValid(token))
+                {
+                    location location = db.location.Where(x => x.name.Equals(name)).FirstOrDefault();
+                    if (location == null)
+                    {
+                        return NotFound();
+                    }
+
+                    return Ok(location);
+                }
+                else
+                {
+                    return Unauthorized();
+                }
+            }
+        }
+
+        [Route("api/locations/update/{token}/{name}")]
+        [ResponseType(typeof(location))]
+        public IHttpActionResult Putlocation(string token, string name)
+        {
+            using (var serv = new SecurityService(db))
+            {
+                if (serv.IsTokenValid(token) && serv.IsTokenAdmin(token))
+                {
+                    using(var apiServ = new WeatherAPIService())
+                    {
+                        var tempLocation = apiServ.GetLocationData(name);
+                        if(tempLocation != null)
+                        {
+                            var location = db.location.Where(x => x.name.Equals(name)).FirstOrDefault();
+                            if(location == null)
+                            {
+                                location = new location();
+                                location.name = name;
+                                db.location.Add(location);
+                            }
+                            location.latitude = tempLocation.latitude;
+                            location.longitude = tempLocation.longitude;
+                            db.SaveChanges();
+                            return Ok(location);
+                        }
+                        else
+                        {
+                            return NotFound();
+                        }
+                    }
+                }
+                else
+                {
+                    return Unauthorized();
                 }
             }
 
-            return StatusCode(HttpStatusCode.NoContent);
-        }
-
-        // POST: api/locations
-        [ResponseType(typeof(location))]
-        public IHttpActionResult Postlocation(location location)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            db.location.Add(location);
-            db.SaveChanges();
-
-            return CreatedAtRoute("DefaultApi", new { id = location.Id }, location);
-        }
-
-        // DELETE: api/locations/5
-        [ResponseType(typeof(location))]
-        public IHttpActionResult Deletelocation(long id)
-        {
-            location location = db.location.Find(id);
-            if (location == null)
-            {
-                return NotFound();
-            }
-
-            db.location.Remove(location);
-            db.SaveChanges();
-
-            return Ok(location);
         }
 
         protected override void Dispose(bool disposing)

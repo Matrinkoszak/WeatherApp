@@ -51,7 +51,7 @@ namespace WeatherAppAPI.Controllers
         {
             using( var serv = new SecurityService(db))
             {
-                var user = db.User.Where(x => x.Login.Equals(login) && x.IsAdmin).FirstOrDefault();
+                var user = db.User.Where(x => x.Login.Equals(login)).FirstOrDefault();
                 if(user != null)
                 {
                     var tempPassword = serv.GetHashString(password);
