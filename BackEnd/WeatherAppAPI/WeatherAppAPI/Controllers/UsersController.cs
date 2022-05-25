@@ -10,6 +10,7 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using WeatherAppAPI.Models;
 using WeatherAppAPI.Services;
+using System.Web.Http.Cors;
 
 namespace WeatherAppAPI.Controllers
 {
@@ -21,6 +22,7 @@ namespace WeatherAppAPI.Controllers
 
         // GET: api/Users/5
         [Route("api/users/{token}/{id}")]
+        [EnableCors(origins: "*", headers: "*", methods: "*")]
         [ResponseType(typeof(User))]
         public IHttpActionResult GetUser(string token, long id)
         {
@@ -45,6 +47,7 @@ namespace WeatherAppAPI.Controllers
 
         // PUT: api/Users/5
         [Route("api/users/{token}/{id}")]
+        [EnableCors(origins: "*", headers: "*", methods: "*")]
         [ResponseType(typeof(void))]
         public IHttpActionResult PutUser(string token,long id, User user)
         {
@@ -93,6 +96,7 @@ namespace WeatherAppAPI.Controllers
 
         // POST: api/Users
         [Route("api/users/{token}")]
+        [EnableCors(origins: "*", headers: "*", methods: "*")]
         [ResponseType(typeof(User))]
         public IHttpActionResult PostUser(string token, User user)
         {
@@ -121,6 +125,7 @@ namespace WeatherAppAPI.Controllers
 
         // DELETE: api/Users/5
         [Route("api/users/{token}/{id}")]
+        [EnableCors(origins: "*", headers: "*", methods: "*")]
         [ResponseType(typeof(User))]
         public IHttpActionResult DeleteUser(string token, long id)
         {

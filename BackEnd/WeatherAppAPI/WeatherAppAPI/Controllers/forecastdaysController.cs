@@ -10,6 +10,7 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using WeatherAppAPI.Models;
 using WeatherAppAPI.Services;
+using System.Web.Http.Cors;
 
 namespace WeatherAppAPI.Controllers
 {
@@ -21,6 +22,7 @@ namespace WeatherAppAPI.Controllers
 
         // GET: api/forecastdays/5
         [Route("api/forcastdays/{token}/{locationName}/{day}")]
+        [EnableCors(origins: "*", headers: "*", methods: "*")]
         [ResponseType(typeof(forecastday))]
         public IHttpActionResult Getforecastday(string token,string locationName, string day)
         {
@@ -53,6 +55,7 @@ namespace WeatherAppAPI.Controllers
         }
         // GET: api/forecastdays/5
         [Route("api/forcastdays/{token}/{locationName}/{startDate}/{endDate}")]
+        [EnableCors(origins: "*", headers: "*", methods: "*")]
         [ResponseType(typeof(List<forecastday>))]
         public IHttpActionResult Getforecastday(string token, string locationName, string startDate, string endDate)
         {
@@ -86,6 +89,7 @@ namespace WeatherAppAPI.Controllers
 
         // PUT: api/forecastdays/5
         [Route("api/forcastdays/updateDays/{token}/{location}/{startDate}/{endDate}")]
+        [EnableCors(origins: "*", headers: "*", methods: "*")]
         [ResponseType(typeof(void))]
         public IHttpActionResult Putforecastdays(string token,string location, string startDate, string endDate)
         {

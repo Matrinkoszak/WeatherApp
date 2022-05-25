@@ -10,6 +10,7 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using WeatherAppAPI.Models;
 using WeatherAppAPI.Services;
+using System.Web.Http.Cors;
 
 namespace WeatherAppAPI.Controllers
 {
@@ -18,6 +19,7 @@ namespace WeatherAppAPI.Controllers
         private WeatherApp_dbEntities db = new WeatherApp_dbEntities();
 
         [Route("api/locations/{token}")]
+        [EnableCors(origins: "*", headers: "*", methods: "*")]
         [ResponseType(typeof(IQueryable<location>))]
         public IHttpActionResult Getlocation(string token)
         {
@@ -35,6 +37,7 @@ namespace WeatherAppAPI.Controllers
         }
 
         [Route("api/locations/{token}/{name}")]
+        [EnableCors(origins: "*", headers: "*", methods: "*")]
         [ResponseType(typeof(location))]
         public IHttpActionResult Getlocation(string token, string name)
         {
@@ -58,6 +61,7 @@ namespace WeatherAppAPI.Controllers
         }
 
         [Route("api/locations/update/{token}/{name}")]
+        [EnableCors(origins: "*", headers: "*", methods: "*")]
         [ResponseType(typeof(location))]
         public IHttpActionResult Putlocation(string token, string name)
         {

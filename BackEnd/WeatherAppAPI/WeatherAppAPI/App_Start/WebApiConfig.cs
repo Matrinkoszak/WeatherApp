@@ -20,6 +20,7 @@ namespace WeatherAppAPI
                 defaults: new { id = RouteParameter.Optional }
             );
 
+            config.EnableCors();
         }
     }
 }

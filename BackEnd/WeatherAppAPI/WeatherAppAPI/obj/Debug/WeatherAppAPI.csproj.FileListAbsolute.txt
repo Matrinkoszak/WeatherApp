@@ -87,3 +87,6 @@ C:\Users\Taboret\source\repos\WeatherApp\BackEnd\WeatherAppAPI\WeatherAppAPI\bin
 C:\Users\Taboret\source\repos\WeatherApp\BackEnd\WeatherAppAPI\WeatherAppAPI\bin\System.Text.Json.xml
 C:\Users\Taboret\source\repos\WeatherApp\BackEnd\WeatherAppAPI\WeatherAppAPI\bin\System.Threading.Tasks.Extensions.xml
 C:\Users\Taboret\source\repos\WeatherApp\BackEnd\WeatherAppAPI\WeatherAppAPI\bin\System.ValueTuple.xml
+C:\Users\Taboret\source\repos\WeatherApp\BackEnd\WeatherAppAPI\WeatherAppAPI\bin\System.Web.Cors.dll
+C:\Users\Taboret\source\repos\WeatherApp\BackEnd\WeatherAppAPI\WeatherAppAPI\bin\System.Web.Http.Cors.dll
+C:\Users\Taboret\source\repos\WeatherApp\BackEnd\WeatherAppAPI\WeatherAppAPI\bin\System.Web.Http.Cors.xml

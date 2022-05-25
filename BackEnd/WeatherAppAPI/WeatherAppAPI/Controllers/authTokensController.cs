@@ -10,6 +10,8 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using WeatherAppAPI.Models;
 using WeatherAppAPI.Services;
+using System.Web.Http.Cors;
+using System.Web.Http.Cors;
 
 namespace WeatherAppAPI.Controllers
 {
@@ -25,6 +27,7 @@ namespace WeatherAppAPI.Controllers
 
         // GET: api/authTokens/token
         [Route("api/authToken/{token}")]
+        [EnableCors(origins: "*", headers: "*", methods: "*")]
         [ResponseType(typeof(authToken))]
         public IHttpActionResult GetauthToken(string token)
         {
@@ -46,6 +49,7 @@ namespace WeatherAppAPI.Controllers
 
         // GET: api/authTokens/login/password
         [Route("api/authToken/{login}/{password}")]
+        [EnableCors(origins: "*", headers: "*", methods: "*")]
         [ResponseType(typeof(authToken))]
         public IHttpActionResult GetauthToken(string login, string password)
         {
@@ -64,7 +68,7 @@ namespace WeatherAppAPI.Controllers
                         token.code = serv.GetRandomToken(user.Password);
                         db.authToken.Add(token);
                         db.SaveChanges();
-                        return Ok(token);
+                         return Ok(token);
                     }
                     else
                     {
