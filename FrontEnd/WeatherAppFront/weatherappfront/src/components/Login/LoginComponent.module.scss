@@ -1,0 +1,32 @@
+.LoginComponent {
+    height: 500px;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: space-evenly;
+    
+    .Form {
+        border: outset 3px;
+
+        .Label {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            align-items: center;
+            justify-content: space-between;
+            margin: 10px 10px 0px 10px;
+
+            .Textbox {
+                margin: 0px 3px 0px 0px;
+            }
+        }
+
+        .Button {
+            justify-content: center;
+            text-align: center;
+            margin: 0px 0px 5px 0px;
+        }
+    }
+    
+}

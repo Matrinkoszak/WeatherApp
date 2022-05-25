@@ -3,8 +3,8 @@
     "",
     "\\BackEnd",
     "\\Database",
-    "\\Database\\WeatherAppDB"
+    "\\Database\\WeatherAppDB",
+    "\\FrontEnd"
   ],
-  "SelectedNode": "\\.gitignore",
   "PreviewInSolutionExplorer": false
 }
