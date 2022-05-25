@@ -1,3 +1,4 @@
 export interface ILoginComponentProps {
-    test: string;
+    setToken(token: string): void;
+    setIsLogIn(isLogIn: boolean): void;
 }

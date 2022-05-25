@@ -6,13 +6,17 @@ import styles from './LoginComponent.module.scss'
 
 const LoginComponent: FC<ILoginComponentProps> = (props) => {
     const { getToken } = useRestAPI();
-    const [token, setToken] = useState("");
     const [login, setLogin] = useState("");
     const [password, setPassword] = useState("");
 
     const handleSumbit = (event: React.FormEvent<HTMLFormElement>): void => {
         event.preventDefault();
-        getToken(login, password).then((response) => { setToken(response) });
+        getToken(login, password).then((response) => {
+            props.setToken(response);
+            if (response != null) {
+                props.setIsLogIn(true);
+            }
+        });
     }
 
     const handleLoginChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
@@ -27,7 +31,6 @@ const LoginComponent: FC<ILoginComponentProps> = (props) => {
 
     return (
         <div className={styles.LoginComponent}>
-            {token}
             <form className={styles.Form} onSubmit={handleSumbit}>
                 <label className={styles.Label}>
                     <div className={styles.Textbox}>

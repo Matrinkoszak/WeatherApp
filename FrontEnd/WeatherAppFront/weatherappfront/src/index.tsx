@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.module.css';
 import reportWebVitals from './reportWebVitals';
-import LoginComponent from './components/Login/LoginComponent';
+import MainComponent from './components/Main/MainComponent';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -10,7 +10,7 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <React.StrictMode>
-        <LoginComponent test = "test" />
+        <MainComponent test = "test" />
   </React.StrictMode>
 );
 
