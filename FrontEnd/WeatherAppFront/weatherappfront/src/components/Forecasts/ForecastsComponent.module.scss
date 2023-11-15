@@ -5,6 +5,30 @@
     flex-wrap: nowrap;
     align-items: center;
     justify-content: space-evenly;
-    
-    
+
+    .table {
+        border-collapse: collapse;
+        text-align: center;
+
+        .tableHeader {
+            border: 1px solid black;
+            font: 20px bold;
+
+            .tableHeaderCell {
+                border: 1px solid black;
+
+                .tableCell {
+                    margin: 4px;
+                }
+            }
+        }
+
+        .tableRow {
+            border-bottom: 1px solid gray;
+
+            .tableCell {
+                margin: 2px;
+            }
+        }
+    }
 }

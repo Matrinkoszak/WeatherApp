@@ -11,7 +11,7 @@ export const useRestAPI = () => {
 
     const getForecastDays = async (token: string, location: string, startDate: Date, endDate: Date): Promise<object> => {
         const response = await restAPIService.getForecastDays(token, location, startDate, endDate);
-        console.log(response);
+        //console.log(response);
         return response;
     }
 

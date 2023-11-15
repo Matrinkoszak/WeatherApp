@@ -9,6 +9,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="src\hooks\" />
+    <Folder Include="src\models\" />
     <Folder Include="src\services\" />
   </ItemGroup>
 </Project>

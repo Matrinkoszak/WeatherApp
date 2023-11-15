@@ -17,26 +17,6 @@ const ForecastsComponent: FC<IForecastsComponentProps> = (props) => {
         )
     }, [])
 
-    //TO DO: exchangeForDownloadedData
-    /*const data: { id:number, title:string }[] = [
-        {
-            id: 1,
-            title: "test"
-        },
-        {
-            id: 2,
-            title: "test"
-        },
-        {
-            id: 3,
-            title: "test"
-        },
-        {
-            id: 4,
-            title: "test"
-        }
-    ]*/
-
     //TO DO: make headers data-aligned
     const headers: {key:string, label:string}[] = [
         { key: "Id", label: "ID" },
@@ -45,9 +25,9 @@ const ForecastsComponent: FC<IForecastsComponentProps> = (props) => {
         { key: "avg_visibility", label: "Avarage Visibility [km]" },
         { key: "condition", label: "Condition" },
         { key: "date", label: "Date" },
-        { key: "max_temp", label: "Maximum Tempreature [Celcius]" },
-        { key: "max_wind", label: "Maximal Wind Speed [km/h]" },
+        { key: "max_temp", label: "Maximum Temperature [Celcius]" },
         { key: "min_temp", label: "Minimal Temperature [Celcius]" },
+        { key: "max_wind", label: "Maximum Wind Speed [km/h]" },
         { key: "moon_illumination", label: "Illumination of the Moon [%]" },
         { key: "moonphase", label: "Phase of the Moon" },
         { key: "moonrise", label: "Moonrise" },
@@ -57,21 +37,38 @@ const ForecastsComponent: FC<IForecastsComponentProps> = (props) => {
     ];
 
     return (
-        <div className={styles.MForecastsComponent}>
-            <table>
+        <div className={styles.ForecastsComponent}>
+            <table className={styles.table}>
                 <thead>
-                    <tr>
+                    <tr className={styles.tableHeader}>
                         {headers.map((row) => {
-                            return <td key={row.key}>{row.label}</td>;
+                            return <td key={row.key} className={styles.tableHeaderCell} >
+                                <div className={styles.tableCell}>
+                                    {row.label}
+                                </div>
+                            </td>;
                         })}
                     </tr>
                 </thead>
                 <tbody>
                     {forecastDays.map((element) => {
                         return (
-                            <tr key={element.Id}>
+                            <tr key={element.Id} className={styles.tableRow}>
                                 <td>{element.Id}</td>
-                                <td>{element.date.toString()}</td>
+                                <td>{element.avg_humidity}</td>
+                                <td>{element.avg_temp}</td>
+                                <td>{element.avg_visibility}</td>
+                                <td>{element.condition}</td>
+                                <td>{element.date.toDateString()}</td>
+                                <td>{element.max_temp}</td>
+                                <td>{element.min_temp}</td>
+                                <td>{element.max_wind}</td>
+                                <td>{element.moon_illumination}</td>
+                                <td>{element.moonphase}</td>
+                                <td>{element.moonrise.toDateString()}</td>
+                                <td>{element.moonset.toDateString()}</td>
+                                <td>{element.sunrise.toDateString()}</td>
+                                <td>{element.sunset.toDateString()}</td>
                             </tr>
                         );
                     })}
