@@ -13,7 +13,7 @@ export class RestApiService {
     }
 
     public getForecastDays = (token: string, location: string, startDate: Date, endDate: Date) => {
-        const url = "https://localhost:44372/api/forcastdays/updateDays/" + token + "/" + location + "/" + startDate.toDateString() + "/" + endDate.toDateString();
+        const url = "https://localhost:44372/api/forcastdays/" + token + "/" + location + "/" + startDate.toDateString() + "/" + endDate.toDateString();
         console.log(url);
         return axios({
             method: 'get',

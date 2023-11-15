@@ -67,7 +67,8 @@ namespace WeatherAppAPI.Controllers
                     DateTime end = DateTime.Parse(endDate);
                     if (start != null && end != null)
                     {
-                        List<forecastday> forecastdays = db.forecastday.Where(x => (x.location.name.Equals(locationName)) && (x.date.Date.CompareTo(start) >= 0) && (x.date.Date.CompareTo(end) <= 0)).ToList();
+                        //List<forecastday> forecastdays = db.forecastday.Where(x => (x.location.name.Equals(locationName)) && (x.date.Date.CompareTo(start) >= 0) && (x.date.Date.CompareTo(end) <= 0)).ToList();
+                        List<forecastday> forecastdays = db.forecastday.Where(x => (x.location.name.Equals(locationName)) && (x.date >= start) && (x.date <= end)).ToList();
                         if (forecastdays == null || forecastdays.Count <= 0)
                         {
                             return NotFound();
@@ -86,6 +87,7 @@ namespace WeatherAppAPI.Controllers
                 }
             }
         }
+
 
         // PUT: api/forecastdays/5
         [Route("api/forcastdays/updateDays/{token}/{location}/{startDate}/{endDate}")]

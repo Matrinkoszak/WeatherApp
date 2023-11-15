@@ -16,7 +16,9 @@ const MainComponent: FC<IMainComponentProps> = (props) => {
             {isLogIn === false && (
                 <LoginComponent setToken={setToken} setIsLogIn={setIsLogIn} />
             )}
-            <ForecastsComponent test={"test"} />
+            {isLogIn === true && (
+                < ForecastsComponent token={token} />
+            )}
         </div>
     );
 };

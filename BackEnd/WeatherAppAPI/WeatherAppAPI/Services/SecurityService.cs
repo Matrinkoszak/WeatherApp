@@ -47,7 +47,7 @@ namespace WeatherAppAPI.Services
 
         public bool IsTokenValid(authToken token)
         {
-            if(token.terminationDate.CompareTo(DateTime.UtcNow) <= 0)
+            if(token.terminationDate.CompareTo(DateTime.UtcNow) >= 0)
             {
                 token.terminationDate = DateTime.UtcNow.AddMinutes(30);
                 db.SaveChanges();

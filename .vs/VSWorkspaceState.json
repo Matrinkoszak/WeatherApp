@@ -2,9 +2,14 @@
   "ExpandedNodes": [
     "",
     "\\BackEnd",
-    "\\Database",
-    "\\Database\\WeatherAppDB",
-    "\\FrontEnd"
+    "\\BackEnd\\WeatherAppAPI",
+    "\\FrontEnd",
+    "\\FrontEnd\\WeatherAppFront",
+    "\\FrontEnd\\WeatherAppFront\\weatherappfront",
+    "\\FrontEnd\\WeatherAppFront\\weatherappfront\\src",
+    "\\FrontEnd\\WeatherAppFront\\weatherappfront\\src\\components",
+    "\\FrontEnd\\WeatherAppFront\\weatherappfront\\src\\components\\Main"
   ],
+  "SelectedNode": "\\FrontEnd\\WeatherAppFront\\weatherappfront\\src\\components\\Main\\MainComponent.tsx",
   "PreviewInSolutionExplorer": false
 }

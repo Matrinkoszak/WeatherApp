@@ -43,7 +43,7 @@ const LoginComponent: FC<ILoginComponentProps> = (props) => {
                     <div className={styles.Textbox}>
                         Password:
                     </div>
-                    <input type="text" name="password" value={password} onChange={handlePasswordChange} />
+                    <input type="password" name="password" value={password} onChange={handlePasswordChange} />
                 </label>
                 <br />
                 <div className={styles.Button}>
