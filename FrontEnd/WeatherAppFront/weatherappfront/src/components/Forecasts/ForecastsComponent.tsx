@@ -65,10 +65,10 @@ const ForecastsComponent: FC<IForecastsComponentProps> = (props) => {
                                 <td>{element.max_wind}</td>
                                 <td>{element.moon_illumination}</td>
                                 <td>{element.moonphase}</td>
-                                <td>{element.moonrise.toDateString()}</td>
-                                <td>{element.moonset.toDateString()}</td>
-                                <td>{element.sunrise.toDateString()}</td>
-                                <td>{element.sunset.toDateString()}</td>
+                                <td>{element.moonrise.toTimeString()}</td>
+                                <td>{element.moonset.toTimeString()}</td>
+                                <td>{element.sunrise.toTimeString()}</td>
+                                <td>{element.sunset.toTimeString()}</td>
                             </tr>
                         );
                     })}
